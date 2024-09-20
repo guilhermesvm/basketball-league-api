@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsPositive, IsString } from "class-validator";
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
+import Team from "./Team";
 
 @Entity()
 export class Player {
@@ -53,6 +54,9 @@ export class Player {
     @IsString()
     draftPick?: string
 
+    @ManyToOne(() => Team, team => team.players)
+    team?: Team
+
     constructor(
         id?: number,
         name?: string,
@@ -64,6 +68,7 @@ export class Player {
         draftYear?: string,
         draftRound?: string,
         draftPick?: string,
+        team?: Team
     ) {
         this.id = id;
         this.name = name;
@@ -75,6 +80,7 @@ export class Player {
         this.draftYear = draftYear; 
         this.draftRound = draftRound; 
         this.draftPick = draftPick; 
+        this.team = team;
     }
 }
 
