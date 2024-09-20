@@ -35,8 +35,8 @@ class TeamRepository {
             return undefined;
         }
 
-        const updatedTeam = this.repository.merge(teamToUpdate, body)
-        return await this.repository.save(updatedTeam);
+        this.repository.merge(teamToUpdate, body)
+        return await this.repository.save(teamToUpdate);
     }
 
     async delete(id: number): Promise<boolean> {
