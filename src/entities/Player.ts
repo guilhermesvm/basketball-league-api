@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsPositive, IsString } from "class-validator";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import Team from "./Team";
 
@@ -55,8 +55,11 @@ export class Player {
     draftPick?: string
 
     @Column("simple-array")
-    @IsNotEmpty()
-    positions?: string[]
+    @IsArray()
+    @ArrayNotEmpty()
+    @ArrayMinSize(1)
+    @IsString({ each: true })
+    positions?: string[];
 
 
     @ManyToOne(() => Team, team => team.players)
