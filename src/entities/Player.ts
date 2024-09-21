@@ -54,6 +54,11 @@ export class Player {
     @IsString()
     draftPick?: string
 
+    @Column("simple-array")
+    @IsNotEmpty()
+    positions?: string[]
+
+
     @ManyToOne(() => Team, team => team.players)
     team?: Team
 
@@ -68,7 +73,8 @@ export class Player {
         draftYear?: string,
         draftRound?: string,
         draftPick?: string,
-        team?: Team
+        team?: Team,
+        positions?: string[]
     ) {
         this.id = id;
         this.name = name;
@@ -81,6 +87,7 @@ export class Player {
         this.draftRound = draftRound; 
         this.draftPick = draftPick; 
         this.team = team;
+        this.positions = positions;
     }
 }
 

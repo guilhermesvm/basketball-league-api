@@ -13,7 +13,7 @@ export class PlayerController {
         try {
             const players = await this.playerRepository.getAll();
             
-            const formattedPlayers = players.map(({ id, name, birthDate, height, weight, number, nacionality, draftYear, draftRound, draftPick }) => ({
+            const formattedPlayers = players.map(({ id, name, birthDate, height, weight, number, nacionality, draftYear, draftRound, draftPick, team, positions }) => ({
                 id,
                 name,
                 birthDate: birthDate ? new Date(birthDate).toISOString().split('T')[0] : null,
@@ -23,7 +23,9 @@ export class PlayerController {
                 nacionality,
                 draftYear,
                 draftRound,
-                draftPick
+                draftPick,
+                team,
+                positions
             }));
             res.status(200).json({ totalPlayers: formattedPlayers.length, players: formattedPlayers });
         } catch (error) {
@@ -45,7 +47,7 @@ export class PlayerController {
                 return;
             }
 
-            const { id, name, birthDate, height, weight, number, nacionality, draftYear, draftRound, draftPick } = player;
+            const { id, name, birthDate, height, weight, number, nacionality, draftYear, draftRound, draftPick, team, positions } = player;
             const formattedPlayer = {
                 id,
                 name,
@@ -56,7 +58,9 @@ export class PlayerController {
                 nacionality,
                 draftYear,
                 draftRound,
-                draftPick
+                draftPick,
+                team,
+                positions 
             };
 
             res.status(200).json({ player: formattedPlayer });
