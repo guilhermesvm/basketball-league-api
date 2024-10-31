@@ -62,7 +62,7 @@ export class Player {
     positions?: string[];
 
 
-    @ManyToOne(() => Team, team => team.players)
+    @ManyToOne(() => Team, team => team.roster)
     team?: Team
 
     constructor(
