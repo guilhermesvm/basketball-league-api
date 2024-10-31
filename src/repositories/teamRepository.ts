@@ -10,21 +10,20 @@ class TeamRepository {
     }
 
     async getAll(): Promise<TeamEntity[]> {
-        const teams = await this.repository.find();
-        return teams;
+        return await this.repository.find();
     }
 
     async getById(id: number): Promise<TeamEntity | undefined>{
-        const team = await this.repository.findOneBy({id});
+        const team = await this.repository.findOneBy({ id });
         return team || undefined
     }
 
-    async create(body: Omit<TeamEntity, "id">): Promise<TeamEntity> {
-        const existingTeam = await this.repository.findOne({where: {name: body.name}})
-        if(existingTeam){
-            throw new HttpError(400, "Team name already in use.")
-        }
+    async getByName(name: string): Promise<TeamEntity | undefined> {
+        const team = await this.repository.findOneBy({ name: name});
+        return team || undefined;
+    }
 
+    async create(body: Omit<TeamEntity, "id">): Promise<TeamEntity> {
         const newTeam = this.repository.create(body);
         return await this.repository.save(newTeam);
     }

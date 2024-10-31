@@ -62,9 +62,15 @@ export class TeamController {
 
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const body = req.body;
+            const { name } = req.body;
 
-            const newTeam = await this.teamRepository.create(body);
+            const existingTeam = await this.teamRepository.getByName(name)
+            if(existingTeam){
+                res.status(400).json({message: "Teams must not have the same name."});
+                return;
+            }
+
+            const newTeam = await this.teamRepository.create(req.body);
             res.status(201).json({ message: "Team was successfully added.", team: newTeam });
         } catch (error) {
             next(error);

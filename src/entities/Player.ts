@@ -1,7 +1,8 @@
 import { Type } from "class-transformer";
-import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsPositive, IsString } from "class-validator";
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import Team from "./Team";
+import { Position } from "./Position";
 
 @Entity()
 export class Player {
@@ -19,15 +20,13 @@ export class Player {
     @IsNotEmpty()
     birthDate?: string;
 
-    @Column("float")
+    @Column()
     @IsNotEmpty()
-    @IsPositive()
-    height?: number;
+    height?: string;
 
-    @Column("float")
+    @Column()
     @IsNotEmpty()
-    @IsPositive()
-    weight?: number;
+    weight?: string;
 
     @Column()
     @IsNotEmpty()
@@ -39,28 +38,26 @@ export class Player {
     @IsString()
     nacionality?: string
 
-    @Column()
-    @IsNotEmpty()
+    @Column({ nullable: true })
+    @IsOptional()
     @IsString()
     draftYear?: string
 
-    @Column()
-    @IsNotEmpty()
+    @Column({ nullable: true })
+    @IsOptional()
     @IsString()
     draftRound?: string
 
-    @Column()
-    @IsNotEmpty()
+    @Column({ nullable: true })
+    @IsOptional()
     @IsString()
     draftPick?: string
 
-    @Column("simple-array")
-    @IsArray()
-    @ArrayNotEmpty()
-    @ArrayMinSize(1)
-    @IsString({ each: true })
-    positions?: string[];
-
+    @ManyToMany(() => Position, position => position.players)
+    @JoinTable()
+    @IsOptional()
+    @IsNotEmpty()
+    positions?: Position[]
 
     @ManyToOne(() => Team, team => team.roster)
     team?: Team
@@ -69,15 +66,15 @@ export class Player {
         id?: number,
         name?: string,
         birthDate?: string,
-        height?: number,
-        weight?: number,
+        height?: string,
+        weight?: string,
         number?: string,
         nacionality?: string,
         draftYear?: string,
         draftRound?: string,
         draftPick?: string,
         team?: Team,
-        positions?: string[]
+        positions?: Position[]
     ) {
         this.id = id;
         this.name = name;

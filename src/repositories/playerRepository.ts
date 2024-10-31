@@ -9,8 +9,8 @@ class PlayerRepository {
     }
 
     async getAll(): Promise<PlayerEntity[]> {
-        const players = await this.repository.find();
-        return players;
+        return await this.repository.find();
+        
     }
 
     async getById(id: number): Promise<PlayerEntity | undefined> {
