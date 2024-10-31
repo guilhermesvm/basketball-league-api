@@ -9,10 +9,10 @@ export class HealthController {
         };
         
         try {
-            res.status(200).send(healthCheck)
+            res.status(200).json(healthCheck)
         } catch (error: any) {
             healthCheck.message = error;
-            res.status(503).send();
+            res.status(503).json();
         }
     }
 }
