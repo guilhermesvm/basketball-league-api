@@ -112,7 +112,7 @@ export class PlayerController {
                 res.status(404).json({ message: "Player not found." });
                 return;
             }
-            res.status(200).json({ message: "Player was successfully deleted." });
+            res.status(200).json({ message: "Player was successfully deleted | Nothing was deleted." });
         } catch (error) {
             next(error);
         }

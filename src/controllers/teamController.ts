@@ -13,14 +13,14 @@ export class TeamController {
         try {
             const teams = await this.teamRepository.getAll();
 
-            const formattedTeams = teams.map(({ id, name, creationDate, city, coach, retiredNumbers, players }) => ({
+            const formattedTeams = teams.map(({ id, name, creationDate, city, coach, retiredNumbers, roster: roster }) => ({
                 id,
                 name,
                 creationDate: creationDate ? new Date(creationDate).toISOString().split('T')[0] : null,
                 city,
                 coach,
                 retiredNumbers,
-                players,
+                roster: roster,
             }));
 
             res.status(200).json({ totalTeams: formattedTeams.length, teams: formattedTeams });
@@ -43,7 +43,7 @@ export class TeamController {
                 return;
             }
 
-            const { id, name, creationDate, city, coach, retiredNumbers, players } = team;
+            const { id, name, creationDate, city, coach, retiredNumbers, roster: roster } = team;
             const formattedTeam = {
                 id,
                 name,
@@ -51,7 +51,7 @@ export class TeamController {
                 city,
                 coach,
                 retiredNumbers,
-                players,
+                roster: roster,
             };
 
             res.status(200).json({ team: formattedTeam });
@@ -103,7 +103,7 @@ export class TeamController {
                 res.status(404).json({ message: "Team not found." });
                 return;
             }
-            res.status(200).json({ message: "Team was successfully deleted." });
+            res.status(200).json({ message: "Team was successfully deleted. | Nothing was deleted." });
         } catch (error) {
             next(error);
         }

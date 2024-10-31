@@ -28,13 +28,13 @@ export class Team {
     @IsNotEmpty()
     @IsString()
     coach?: string;
-    
+
     @Column("simple-array")
     @IsNotEmpty()
     retiredNumbers?: string[];
 
     @OneToMany(() => Player, player => player.team)
-    players?: Player[];
+    roster?: Player[];
 
     constructor(
         id?: number,
@@ -43,7 +43,7 @@ export class Team {
         city?: string,
         coach?: string,
         retiredNumbers?: string[],
-        players?: Player[]
+        roster?: Player[]
     ) {
         this.id = id;
         this.name = name;
@@ -51,7 +51,7 @@ export class Team {
         this.city = city;
         this.coach = coach;
         this.retiredNumbers = retiredNumbers;
-        this.players = players;
+        this.roster = roster;
     }
 }
 
