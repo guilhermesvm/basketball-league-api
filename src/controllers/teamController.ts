@@ -13,7 +13,7 @@ export class TeamController {
         try {
             const teams = await this.teamRepository.getAll();
 
-            const formattedTeams = teams.map(({ id, name, creationDate, city, coach, retiredNumbers, roster: roster }) => ({
+            const formattedTeams = teams.map(({ id, name, creationDate, city, coach, retiredNumbers, roster }) => ({
                 id,
                 name,
                 creationDate: creationDate ? new Date(creationDate).toISOString().split('T')[0] : null,
@@ -25,6 +25,7 @@ export class TeamController {
 
             res.status(200).json({ totalTeams: formattedTeams.length, teams: formattedTeams });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -56,6 +57,7 @@ export class TeamController {
 
             res.status(200).json({ team: formattedTeam });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -73,6 +75,7 @@ export class TeamController {
             const newTeam = await this.teamRepository.create(req.body);
             res.status(201).json({ message: "Team was successfully added.", team: newTeam });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -92,6 +95,7 @@ export class TeamController {
             }
             res.status(200).json({ message: "Team was successfully updated.", team: updatedTeam });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -111,6 +115,7 @@ export class TeamController {
             }
             res.status(200).json({ message: "Team was successfully deleted. | Nothing was deleted." });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }

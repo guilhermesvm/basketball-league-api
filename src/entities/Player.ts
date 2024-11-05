@@ -1,8 +1,8 @@
 import { Type } from "class-transformer";
-import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import Team from "./Team";
-import { Position } from "./Position";
+import Position from "./Position";
 
 @Entity()
 export class Player {

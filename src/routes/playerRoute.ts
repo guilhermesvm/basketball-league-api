@@ -1,7 +1,7 @@
 import express  from "express";
 import { PlayerController } from "../controllers/playerController";
 import PlayerEntity from "../entities/Player";
-import { validationMiddleware } from "../middleware/fieldValidation";
+import { validationMiddleware } from "../middlewares/fieldValidation";
 
 const router = express.Router();
 const playerController = new PlayerController();

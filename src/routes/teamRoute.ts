@@ -1,6 +1,6 @@
 import express from "express";
 import { TeamController } from "../controllers/teamController";
-import { validationMiddleware } from "../middleware/fieldValidation";
+import { validationMiddleware } from "../middlewares/fieldValidation";
 import TeamEntity from "../entities/Team";
 
 const router = express.Router();

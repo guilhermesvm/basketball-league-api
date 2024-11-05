@@ -35,7 +35,7 @@ class PlayerRepository {
 
     async delete(id: number): Promise<boolean> {
         const result = await this.repository.delete(id);
-        return result.affected ? result.affected > 0: false
+        return result.affected ? result.affected > 0 : false
     }
 }
 

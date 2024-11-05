@@ -29,6 +29,7 @@ export class PlayerController {
             }));
             res.status(200).json({ totalPlayers: formattedPlayers.length, players: formattedPlayers });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -65,6 +66,7 @@ export class PlayerController {
 
             res.status(200).json({ player: formattedPlayer });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -76,6 +78,7 @@ export class PlayerController {
             const newPlayer = await this.playerRepository.create(body);
             res.status(201).json({ message: "Player was successfully added.", player: newPlayer });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -95,6 +98,7 @@ export class PlayerController {
             }
             res.status(200).json({ message: "Player was successfully updated.", player: updatedPlayer });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }
@@ -114,6 +118,7 @@ export class PlayerController {
             }
             res.status(200).json({ message: "Player was successfully deleted | Nothing was deleted." });
         } catch (error) {
+            console.error(error);
             next(error);
         }
     }

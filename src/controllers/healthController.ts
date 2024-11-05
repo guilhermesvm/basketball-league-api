@@ -4,7 +4,6 @@ export class HealthController {
     health = async(req: Request, res: Response): Promise<void> => {
         const healthCheck = {
             message: "Success.",
-            uptime: process.uptime(),
             timestamp: Date.now()
         };
         
