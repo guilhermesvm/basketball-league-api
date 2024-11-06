@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { AppDataSource } from "../data-source";
+import { appDataSource } from "../data-source";
 import PositionRepository from "../repositories/positionRepository";
 
 export default class PositionController {
     private positionRepository: PositionRepository;
 
     constructor(){
-        this.positionRepository = new PositionRepository(AppDataSource);
+        this.positionRepository = new PositionRepository(appDataSource);
     }
 
     getAll = async(req: Request, res: Response, next: NextFunction): Promise<void> => {

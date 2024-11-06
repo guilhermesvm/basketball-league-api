@@ -1,9 +1,9 @@
-import { AppDataSource } from "./src/data-source";
+import { appDataSource } from "./src/data-source";
 import app from "./src/app";
 
 const PORT = parseInt(process.env.API_PORT || '3001');
 
-AppDataSource.initialize()
+appDataSource.initialize()
     .then(() =>{
         console.log("Data Source has been initialized");
         app.listen(PORT, () => {

@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { AppDataSource } from "../data-source";
+import { appDataSource } from "../data-source";
 import TeamRepository from "../repositories/teamRepository"
 
 export class TeamController {
     private teamRepository: TeamRepository;
 
     constructor() {
-        this.teamRepository = new TeamRepository(AppDataSource);
+        this.teamRepository = new TeamRepository(appDataSource);
     }
 
     getAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

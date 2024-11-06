@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { AppDataSource } from "../data-source";
+import { appDataSource } from "../data-source";
 import PlayerRepository from "../repositories/playerRepository";
 
 export class PlayerController {
     private playerRepository: PlayerRepository;
 
     constructor() {
-        this.playerRepository = new PlayerRepository(AppDataSource);
+        this.playerRepository = new PlayerRepository(appDataSource);
     }
 
     getAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
