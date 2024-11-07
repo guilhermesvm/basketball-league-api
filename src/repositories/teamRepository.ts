@@ -1,6 +1,5 @@
 import { DataSource, Repository } from "typeorm";
 import TeamEntity from "../entities/Team";
-import HttpError from "../errors/http-error";
 
 class TeamRepository {
     private repository: Repository<TeamEntity>;

@@ -50,7 +50,6 @@ export default class PositionController {
         } catch (error) {
             console.error(error);
             next(error);
-            
         }
     }
 }

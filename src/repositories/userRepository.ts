@@ -1,5 +1,5 @@
 import { DataSource, Repository } from "typeorm";
-import UserEntity, { User } from "../entities/User";
+import UserEntity from "../entities/User";
 
 export class UserRepository{
     private repository: Repository<UserEntity>

@@ -59,7 +59,7 @@ export class UserController {
                 return;
             }
             
-            const existingUser = await this.userRepository.getByEmail(email.ToLowerCase());
+            const existingUser = await this.userRepository.getByEmail(email.toLowerCase());
             if(existingUser){
                 res.status(400).json({message: "Email already in use"});
                 return;
