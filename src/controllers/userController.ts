@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { appDataSource } from "../data-source";
 import { UserRepository } from "../repositories/userRepository";
+import bcrypt from "bcryptjs"
 
 export class UserController {
-    private repository: UserRepository
+    private userRepository: UserRepository
 
     constructor(){
-        this.repository = new UserRepository(appDataSource)
+        this.userRepository = new UserRepository(appDataSource)
     }
 
     getAll = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const users = await this.repository.getAll();
+            const users = await this.userRepository.getAll();
             const formattedUsers = users.map(({id, name, email}) => ({
                 id,
                 name,
@@ -21,7 +22,6 @@ export class UserController {
             res.status(200).json({totalUsers: formattedUsers.length, users: formattedUsers})
             
         } catch (error) {
-            console.error(error);
             next(error);
         }
     }
@@ -34,7 +34,7 @@ export class UserController {
                 return;
             }
 
-            const user = await this.repository.getById(userId)
+            const user = await this.userRepository.getById(userId)
             if(!user){
                 res.status(404).json({message: "User not found."});
                 return;
@@ -48,7 +48,6 @@ export class UserController {
             res.status(200).json({user: formattedUser});
         } catch (error) {
             console.error(error);
-            next(error);
         }
     }
 
@@ -60,10 +59,63 @@ export class UserController {
                 return;
             }
             
-            const existingUser = await this.repository.getByEmail(email.To)
-            
+            const existingUser = await this.userRepository.getByEmail(email.ToLowerCase());
+            if(existingUser){
+                res.status(400).json({message: "Email already in use"});
+                return;
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 3);
+
+            const newUser = await this.userRepository.create({
+                name: name,
+                email: email,
+                password: hashedPassword
+            });
+
+            res.status(201).json({message: "User added", user: newUser});
         } catch (error) {
-            
+            next(error)
+        }
+    }
+
+    update = async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if(isNaN(userId)){
+                res.status(400).json({message: "Invalid user ID."});
+                return;
+            }
+
+            const updatedUser = await this.userRepository.update(userId, req.body);
+            if(!updatedUser){
+                res.status(404).json({message: "User not found."});
+                return;
+            }
+
+            res.status(201).json({message: "User was successfully updated", user: updatedUser});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    delete = async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if(isNaN(userId)){
+                res.status(400).json({message: "Invalid user ID."});
+                return;
+            }
+
+            const success = await this.userRepository.delete(userId);
+            if(!success){
+                res.status(404).json({message: "User not found."});
+                return;
+            }
+
+            res.status(204).json({message: "User was successfully deleted. | Nothing was deleted."})
+        } catch (error) {
+            next(error)
         }
     }
 }

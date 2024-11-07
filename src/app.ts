@@ -5,6 +5,7 @@ import healthRoutes from "./routes/healthRoute";
 import playerRoutes from "./routes/playerRoute";
 import teamRoutes from "./routes/teamRoute";
 import positionRouter from "./routes/positionRoute";
+import userRouter from "./routes/userRoute";
 
 const app: Application = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use("/webmob", healthRoutes);
 app.use("/webmob", playerRoutes);
 app.use("/webmob", teamRoutes);
 app.use("/webmob", positionRouter)
+app.use("/webmob", userRouter)
 
 app.use(errorHandler);
 
