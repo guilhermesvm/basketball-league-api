@@ -13,7 +13,10 @@ class TeamRepository {
     }
 
     async getById(id: number): Promise<TeamEntity | undefined>{
-        const team = await this.repository.findOneBy({ id });
+        const team = await this.repository.findOne({
+            where: { id },
+            relations: ["roster"]
+        });
         return team || undefined
     }
 

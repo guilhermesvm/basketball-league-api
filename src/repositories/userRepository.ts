@@ -18,7 +18,7 @@ export class UserRepository{
     }
 
     async getByEmail(email: string): Promise<UserEntity | undefined> {
-        const user = await this.repository.findOneBy({email: email});
+        const user = await this.repository.findOneBy({ email: email });
         return user || undefined;
     }
 

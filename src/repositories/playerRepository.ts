@@ -1,4 +1,4 @@
-import { DataSource, Repository } from "typeorm";
+import { DataSource, In, Repository } from "typeorm";
 import PlayerEntity from "../entities/Player";
 
 class PlayerRepository {
@@ -10,12 +10,21 @@ class PlayerRepository {
 
     async getAll(): Promise<PlayerEntity[]> {
         return await this.repository.find();
-        
     }
 
     async getById(id: number): Promise<PlayerEntity | undefined> {
-        const player = await this.repository.findOneBy({ id });
+        const player = await this.repository.findOne({
+            where: { id },
+            relations: ["team","positions"]
+        });
         return player || undefined;
+    }
+
+    async getBy(ids: number[]): Promise<PlayerEntity[] | undefined> {
+        const players = await this.repository.findBy({
+            id: In(ids)
+        })
+        return players || undefined;
     }
 
     async create(body: Omit<PlayerEntity, "id">): Promise<PlayerEntity> {
@@ -30,7 +39,6 @@ class PlayerRepository {
         }
         const updatedPlayer = this.repository.merge(playerToUpdate, body)
         return await this.repository.save(updatedPlayer);
-        
     }
 
     async delete(id: number): Promise<boolean> {

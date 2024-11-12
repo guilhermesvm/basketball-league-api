@@ -6,6 +6,6 @@ const router = express.Router()
 const positionController = new PositionController;
 
 router.get("/positions", authentication.hasAuthentication, positionController.getAll);
-router.get("/positions/:id", authentication.hasAuthentication, positionController.getById)
+router.get("/positions/:id", authentication.hasAuthentication, positionController.getById);
 
 export default router;

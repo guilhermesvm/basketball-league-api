@@ -33,7 +33,13 @@ export class AuthController {
                 email: email
             }, process.env.TOKEN_KEY!, {expiresIn: "24h"});
 
-            res.status(200).json({message: "Logged in successfully.", auth: true, token: token});
+            res.status(200).json({
+                message: "Logged in successfully.",
+                auth: true,
+                token: token,
+                name: user.name,
+                id: user.id
+            });
             
         } catch (error) {
             next(error)

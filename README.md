@@ -1,11 +1,8 @@
 # National Basketball Association
 
-* GitHub Repo: https://github.com/guilhermesvm/nba-api
-* Guilherme S. Machado - (196890)
-
 ## Installation and Setup
 
-### BackEnd
+### NPM Dependencies
 
 NPM Dev Parameters:
 - TypeORM: `npx typeorm init --database postgres`
@@ -28,13 +25,7 @@ NPM Parameters:
 - JWT: `npm install jsonwebtoken`
 - @types/jsonwebtoken: `npm install @types/jsonwebtoken`
 - BcryptJS (password hashing): `npm install bcryptjs`
-
-
-### FrontEnd
-
-- Next.js : `npm install -g nextjs`
-- React/Next files: `npx create-next-app@latest`
-- Axios: `npm install axios`
+- Faker: `npm install @faker-js/faker`
 
 
 

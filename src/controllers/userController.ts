@@ -47,7 +47,7 @@ export class UserController {
 
             res.status(200).json({user: formattedUser});
         } catch (error) {
-            console.error(error);
+            next(error);
         }
     }
 
@@ -75,7 +75,7 @@ export class UserController {
 
             res.status(201).json({message: "User added", user: newUser});
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 
@@ -84,6 +84,14 @@ export class UserController {
             const userId = parseInt(req.params.id);
             if(isNaN(userId)){
                 res.status(400).json({message: "Invalid user ID."});
+                return;
+            }
+
+            let email = req.body.email;
+            
+            const existingUser = await this.userRepository.getByEmail(email.toLowerCase());
+            if(existingUser){
+                res.status(400).json({message: "Email already in use"});
                 return;
             }
 

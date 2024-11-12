@@ -1,4 +1,4 @@
-import { DataSource, Repository } from "typeorm";
+import { DataSource, In, Repository } from "typeorm";
 import PositionEntity from "../entities/Position";
 
 export default class PositionRepository {
@@ -15,6 +15,13 @@ export default class PositionRepository {
     async getById(id: number): Promise<PositionEntity | undefined> {
         const position = await this.repository.findOneBy({ id })
         return position || undefined;
+    }
+
+    async getBy(ids: number[]): Promise<PositionEntity[] | undefined> {
+        const positions = await this.repository.findBy({
+            id: In(ids)
+        })
+        return positions || undefined;
     }
 
     async getByName(name: string): Promise<PositionEntity | undefined> {

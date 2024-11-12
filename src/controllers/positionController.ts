@@ -20,7 +20,6 @@ export default class PositionController {
 
             res.status(200).json({totalPositions: formattedPositions.length, positions: formattedPositions});
         } catch (error) {
-            console.error(error);
             next(error);
         }
     }
@@ -48,7 +47,6 @@ export default class PositionController {
 
             res.status(200).json({position: formattedPosition});
         } catch (error) {
-            console.error(error);
             next(error);
         }
     }
