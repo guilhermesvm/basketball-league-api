@@ -44,6 +44,10 @@ class TeamRepository {
         const result = await this.repository.delete(id);
         return result.affected ? result.affected > 0 : false;
     }
+
+    async save(team: TeamEntity): Promise<TeamEntity> {
+        return await this.repository.save(team);
+    }
 }
 
 export default TeamRepository;

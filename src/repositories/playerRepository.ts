@@ -9,7 +9,9 @@ class PlayerRepository {
     }
 
     async getAll(): Promise<PlayerEntity[]> {
-        return await this.repository.find();
+        return await this.repository.find({
+            relations: ["positions"]
+        });
     }
 
     async getById(id: number): Promise<PlayerEntity | undefined> {
@@ -44,6 +46,10 @@ class PlayerRepository {
     async delete(id: number): Promise<boolean> {
         const result = await this.repository.delete(id);
         return result.affected ? result.affected > 0 : false
+    }
+
+    async save(player: PlayerEntity): Promise<PlayerEntity> {
+        return await this.repository.save(player);
     }
 }
 

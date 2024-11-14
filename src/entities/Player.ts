@@ -55,11 +55,11 @@ export class Player {
 
     @ManyToMany(() => Position, position => position.players)
     @JoinTable()
-    @IsOptional()
     @IsNotEmpty()
     positions?: Position[]
 
-    @ManyToOne(() => Team, team => team.roster)
+    @ManyToOne(() => Team, team => team.roster, { nullable: true })
+    @IsOptional()
     team?: Team
 
     constructor(

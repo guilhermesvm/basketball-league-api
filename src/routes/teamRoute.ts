@@ -12,5 +12,6 @@ router.get("/teams/:id", authentication.hasAuthentication, teamController.getByI
 router.post("/teams", authentication.hasAuthentication, validationMiddleware(TeamEntity), teamController.create);
 router.put("/teams/:id", authentication.hasAuthentication, validationMiddleware(TeamEntity), teamController.update);
 router.delete("/teams/:id", authentication.hasAuthentication, teamController.delete);
+router.delete("/teams/:id/roster/:playerId", authentication.hasAuthentication, teamController.removePlayerFromTeam);
 
 export default router;
