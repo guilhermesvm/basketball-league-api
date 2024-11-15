@@ -1,4 +1,12 @@
-# National Basketball Association
+# NBA Management API
+
+#### Video Demo:  <URL HERE>
+
+#### Description:
+The National Basketball Association API is a web project focused on backend development.
+TODO 750 words
+
+
 
 ## Installation and Setup
 

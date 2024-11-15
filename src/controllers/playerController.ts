@@ -119,20 +119,20 @@ export class PlayerController {
     insertPosition = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const playerId = parseInt(req.params.id, 10);
+            const positionsIds = req.body.positions
             if(isNaN(playerId)){
                 res.status(400).json({message: "Invalid Player ID."});
+                return;
+            }
+
+            if(!positionsIds || !Array.isArray(positionsIds) || positionsIds.some(id => isNaN(id))){
+                res.status(400).json({message: "Invalid Position(s) ID(s)."});
                 return;
             }
 
             const player = await this.playerRepository.getById(playerId);
             if(!player){
                 res.status(404).json({message: "Player not found."});
-                return;
-            }
-
-            const positionsIds = req.body.positions
-            if(!positionsIds || !Array.isArray(positionsIds) || positionsIds.some(id => isNaN(id))){
-                res.status(400).json({message: "Invalid Position(s) ID(s)."});
                 return;
             }
 
@@ -181,7 +181,6 @@ export class PlayerController {
                 return;
             }
 
-            
             const positionRepository: PositionRepository = new PositionRepository(appDataSource);
             const existingPosition = await positionRepository.getById(positionId);
             const player = await this.playerRepository.getById(playerId);
@@ -190,9 +189,7 @@ export class PlayerController {
                 return;
             }
 
-            
-
-            const isPositionAssigned = player.positions?.some(pos => pos.id === positionId);
+            const isPositionAssigned = player.positions?.some(position => position.id === positionId);
             if(!isPositionAssigned){
                 res.status(400).json({ message: "Position is not assigned to this player." });
                 return;

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { appDataSource } from "../data-source";
 import TeamRepository from "../repositories/teamRepository"
 import PlayerRepository from "../repositories/playerRepository";
+import { getCurrentYear } from "../utils/getCurentYear";
 
 export class TeamController {
     private teamRepository: TeamRepository;
@@ -30,7 +31,7 @@ export class TeamController {
 
     getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const teamId = parseInt(req.params.id);
+            const teamId = parseInt(req.params.id, 10);
             if (isNaN(teamId)) {
                 res.status(400).json({ message: "Invalid team ID." });
                 return; 
@@ -70,17 +71,6 @@ export class TeamController {
                 return;
             }
 
-            const playersId = req.body.roster;
-            if(playersId && Array.isArray(playersId)){
-                const playerRepository: PlayerRepository = new PlayerRepository(appDataSource);
-                const players = await playerRepository.getBy(playersId);
-                if(!players || players.length !== playersId.length){
-                    res.status(400).json({ message: "Some players could not be found." });
-                    return;
-                }
-                body.roster = players;
-            }
-
             const newTeam = await this.teamRepository.create(body);
             res.status(201).json({ message: "Team was successfully added.", team: newTeam });
         } catch (error) {
@@ -91,9 +81,9 @@ export class TeamController {
     update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const body = req.body;
-            const teamId = parseInt(req.params.id);
+            const teamId = parseInt(req.params.id, 10);
             if (isNaN(teamId)) {
-                res.status(400).json({ message: "Invalid team ID." });
+                res.status(400).json({ message: "Invalid Team ID." });
                 return;
             }
 
@@ -104,20 +94,9 @@ export class TeamController {
                 return;
             }
 
-            const playersId = req.body.roster;
-            if(playersId && Array.isArray(playersId)){
-                const playerRepository: PlayerRepository = new PlayerRepository(appDataSource);
-                const players = await playerRepository.getBy(playersId);
-                if(!players || playersId.length !== players.length){
-                    res.status(400).json({ message: "Some players could not be found." });
-                    return;
-                }
-                body.roster = players;
-            }
-
-            const updatedTeam = await this.teamRepository.update(teamId, req.body);
+            const updatedTeam = await this.teamRepository.update(teamId, body);
             if (!updatedTeam) {
-                res.status(404).json({ message: "Team not found." });
+                res.status(500).json({ message: "Failed to update team." });
                 return;
             }
             res.status(200).json({ message: "Team was successfully updated.", team: updatedTeam });
@@ -136,10 +115,73 @@ export class TeamController {
 
             const result = await this.teamRepository.delete(teamId);
             if (!result) {
-                res.status(404).json({ message: "Team not found." });
+                res.status(404).json({ message: "Team not found."});
                 return;
             }
             res.status(200).json({ message: "Team was successfully deleted. | Nothing was deleted." });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    insertPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const teamId = parseInt(req.params.id, 10);
+            const playerId = req.body.playerId;
+            if(isNaN(teamId) || !playerId || isNaN(playerId)){
+                res.status(400).json({message: "Invalid Team or Player ID."});
+                return;
+            }
+
+            const team = await this.teamRepository.getById(teamId);
+            if(!team){
+                res.status(404).json({ message: "Team not found."});
+                return;
+            }
+
+            const playerRepository: PlayerRepository = new PlayerRepository(appDataSource);
+            const player = await playerRepository.getById(playerId);
+            if(!player){
+                res.status(404).json({message: "Player not found."});
+                return;
+            }
+
+            const isPlayerAlreadyAssigned = player.team;
+            if(isPlayerAlreadyAssigned !== null){
+                res.status(400).json({message: "Player is already assigned to a team."});
+                return;
+            }
+
+            if(player.draftYear === null){
+                player.draftYear = getCurrentYear();
+            }
+            player.team = team;
+            
+            const updatedPlayer = await playerRepository.save(player);
+            if (!updatedPlayer) {
+                res.status(500).json({ message: "Failed to assign player to team." });
+                return;
+            }
+
+            team.roster?.push(player);
+
+            const updatedTeam = await this.teamRepository.save(team);
+            if(!updatedTeam){
+                res.status(500).json({ message: "Failed to update team roster." });
+                return;
+            }
+
+            /*AI CODE to send back the updated roster*/
+            const teamResponse = {
+                ...updatedTeam,
+                roster: updatedTeam.roster?.map(p => ({
+                    id: p.id,
+                    name: p.name,
+                }))
+            };
+            /*AI CODE to send back the updated roster*/
+
+            res.status(200).json({message: "Player assigned successfully.", team: teamResponse})
         } catch (error) {
             next(error);
         }
@@ -155,21 +197,21 @@ export class TeamController {
             }
 
             const team = await this.teamRepository.getById(teamId);
-            if(!team ){
+            if(!team){
                 res.status(404).json({message: "Team not found."});
                 return;
             }
 
             const playerRepository: PlayerRepository = new PlayerRepository(appDataSource);
-            const existingPlayer = await playerRepository.getById(playerId);
-            if(!existingPlayer){
+            const player = await playerRepository.getById(playerId);
+            if(!player){
                 res.status(404).json({message: "Player not found."});
                 return;
             }
 
             const isPlayerAssigned = team.roster?.some(player => player.id === playerId);
             if(!isPlayerAssigned){
-                res.status(400).json({message: "Player is not assigened to this team."});
+                res.status(400).json({message: "Player is not assigned to this team."});
                 return;
             }
 
