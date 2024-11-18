@@ -28,24 +28,4 @@ export default class PositionRepository {
         const position = await this.repository.findOneBy({ name: name })
         return position || undefined;
     }
-
-    async create(body: Omit<PositionEntity, "id">): Promise<PositionEntity> {
-        const newPosition = this.repository.create(body);
-        return await this.repository.save(newPosition);
-    }
-
-    async update(id: number, body: Omit<PositionEntity, "id">): Promise<PositionEntity | undefined> {
-        const positionToUpdate = await this.getById(id);
-        if(!positionToUpdate){
-            return undefined;
-        }
-
-        const updatedPosition = this.repository.merge(positionToUpdate, body);
-        return await this.repository.save(updatedPosition);
-    }
-
-    async delete(id: number): Promise<boolean> {
-        const result = await this.repository.delete(id);
-        return result.affected ? result.affected > 0 : false;
-    }
 }

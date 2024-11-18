@@ -86,9 +86,15 @@ export class PlayerController {
                 return;
             }
 
+            const player = await this.playerRepository.getById(playerId);
+            if(!player){
+                res.status(404).json({message: "Player not found."});
+                return;
+            }
+
             const updatedPlayer = await this.playerRepository.update(playerId, body);
             if (!updatedPlayer) {
-                res.status(500).json({ message: "Failed to update player." });
+                res.status(404).json({ message: "Failed to update player."});
                 return;
             }
             res.status(200).json({ message: "Player was successfully updated.", player: updatedPlayer });

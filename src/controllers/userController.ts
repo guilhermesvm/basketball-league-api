@@ -87,12 +87,20 @@ export class UserController {
                 return;
             }
 
-            let email = req.body.email;
-            
-            const existingUser = await this.userRepository.getByEmail(email.toLowerCase());
-            if(existingUser){
-                res.status(400).json({message: "Email already in use"});
+            const user = await this.userRepository.getById(userId);
+            if(!user){
+                res.status(400).json({message: "User not found"});
                 return;
+            }
+
+            const { email, ...otherData } = req.body;
+
+            if(email && email.toLowerCase() !== user.email?.toLowerCase()){
+                const existingUser = await this.userRepository.getByEmail(email.toLowerCase());
+                if(existingUser){
+                    res.status(400).json({message: "Email already in use"});
+                    return;
+                }
             }
 
             const updatedUser = await this.userRepository.update(userId, req.body);
@@ -101,7 +109,7 @@ export class UserController {
                 return;
             }
 
-            res.status(201).json({message: "User was successfully updated", user: updatedUser});
+            res.status(200).json({message: "User was successfully updated", user: updatedUser});
         } catch (error) {
             next(error);
         }
@@ -121,7 +129,7 @@ export class UserController {
                 return;
             }
 
-            res.status(204).json({message: "User was successfully deleted. | Nothing was deleted."})
+            res.status(200).json({message: "User was successfully deleted. | Nothing was deleted."})
         } catch (error) {
             next(error)
         }
