@@ -55,7 +55,6 @@ export class Player {
 
     @ManyToMany(() => Position, position => position.players)
     @JoinTable()
-    @IsNotEmpty()
     positions?: Position[]
 
     @ManyToOne(() => Team, team => team.roster, { nullable: true })

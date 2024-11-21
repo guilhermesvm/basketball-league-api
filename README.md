@@ -1,13 +1,8 @@
 # NBA Management API 🏀
 
-## Video Demo:  <URL HERE>
-
-## Description
->Welcome to the NBA Management API! <br>
-This project is a backend solution designed to manage a few aspects of NBA teams, players, and their positions. The API is a RESTful service that allows users to interact with NBA-related data through HTTP server requests and perform CRUD (Create, Read, Update, and Delete) operations.
-
-### Project Overview
-> The NBA Management API is built using modern web technologies to ensure scalability and performance. It provides a robust platform for managing user authentication, player profiles, team rosters, and making it an ideal solution for basketball enthusiasts.
+## Project Overview
+Welcome to the NBA Management API! <br>
+This project is a backend solution designed to manage a few aspects of NBA teams, players, and their positions. The API is a RESTful service that allows users to interact with NBA-related data through HTTP server requests and perform CRUD (Create, Read, Update, and Delete) operations. It's built using modern web technologies to ensure scalability and performance.
 
 ### Key Features
 - **Login Feature**: Secure authentication process to ensure that only authorized users can access the API and its endpoints, by JWT token management
@@ -20,26 +15,9 @@ This project is a backend solution designed to manage a few aspects of NBA teams
 ### Project Structure
 - **src/**
     - **controllers:** Contains the controller files that define the API endpoints and handle HTTP requests.
-        - **authController:** Manages user authentication and session management with JWT tokens.
-        - **healthController:** Provides a health check endpoint to monitor API status.
-        - **playerController:** Handles CRUD operations for player data.
-        - **positionController:** List all positions and players assigned to them.
-        - **teamController:** Handles team data and roster management.
-        - **userController:** Manages user sensitive data and permissions.
     - **entities:** Defines the data models using TypeORM decorators, representing tables in the PostgreSQL database.
-        - **Player:** Represents player data and attributes.
-        - **Position**: Represents player position(s) and team.
-        - **Team:** Manages team information and associations.
-        - **User:** Handles user data and authentication details.
     - **middlewares:** Includes middleware functions for handling authentication, validation, and error handling.
-        - **authenticationHandler:** Ensures secure access to API endpoints by checking if the request was sent with the JWT token on its header.
-        - **errorHandler:** Manages server error responses and logging.
-        - **fieldValidation:** Validates incoming request data.
     - **repositories:** Implements the data access layer, providing methods to interact with the database.
-        - **playerRepository:** Handles database operations for players.
-        - **positionRepository:** Manages position-related database interactions.
-        - **teamRepository:** Handles database operations for teams.
-        - **userRepository:** Manages user data retrieval and storage.
     - **routes:** Configures the API routes, mapping HTTP requests to the appropriate controller methods.
     - **seeders:** Scripts that seed the database with static and/or dynamic data.
     - **helpers:** A few useful files and helper functions.
@@ -69,7 +47,6 @@ This project is a backend solution designed to manage a few aspects of NBA teams
 - **Class Validator:** Provides decorators for validating Entities class properties.
 - **JWT:** Used for creating and verifying JSON Web Tokens for the API routes, mapping HTTP requests tntication.
 - **BcryptJS:** Library for hashing passwords securely.
-- **Faker:** Generates fake data for testing and seeding the database.
 
 
 ## Installation and Setup
